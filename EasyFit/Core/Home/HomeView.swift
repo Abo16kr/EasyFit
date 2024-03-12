@@ -10,9 +10,12 @@ import Charts
 
 struct HomeView: View {
     @State private var averageIsShown = false
+    @State var showAccountInfo: Bool = false
 
     @EnvironmentObject var vmUser : UserInfoViewModel
     @EnvironmentObject var healthManger :  HealthManger
+    @EnvironmentObject var vmFood: FoodMoldeView
+
     let columns = [
         GridItem(.flexible(minimum: 40)),
         GridItem(.flexible(minimum: 40)),
@@ -45,30 +48,30 @@ struct HomeView: View {
                             Text("Your daily health statistics")
                                 .font(.system(size: 15, weight: .regular))
 
-                            Chart {
-                                ForEach(healthData) { data in
-                                    // Steps line
-                                    LineMark(
-                                        x: .value("Date", data.date, unit: .day),
-                                        y: .value("Steps", data.steps)
-                                    )
-                                    .foregroundStyle(.blue)
-                                    
-                                    // Calories line
-                                    LineMark(
-                                        x: .value("Date", data.date, unit: .day),
-                                        y: .value("Calories", data.calories)
-                                    )
-                                    .foregroundStyle(.red)
-                                    
-                                    // Sleep hours line
-                                    LineMark(
-                                        x: .value("Date", data.date, unit: .day),
-                                        y: .value("Sleep Hours", data.sleepHours)
-                                    )
-                                    .foregroundStyle(.green)
-                                }
-                            }.frame(height: 200)
+//                            Chart {
+//                                ForEach(healthData) { data in
+//                                    // Steps line
+//                                    LineMark(
+//                                        x: .value("Date", data.date, unit: .day),
+//                                        y: .value("Steps", data.steps)
+//                                    )
+//                                    .foregroundStyle(.blue)
+//                                    
+//                                    // Calories line
+//                                    LineMark(
+//                                        x: .value("Date", data.date, unit: .day),
+//                                        y: .value("Calories", data.calories)
+//                                    )
+//                                    .foregroundStyle(.red)
+//                                    
+//                                    // Sleep hours line
+//                                    LineMark(
+//                                        x: .value("Date", data.date, unit: .day),
+//                                        y: .value("Sleep Hours", data.sleepHours)
+//                                    )
+//                                    .foregroundStyle(.green)
+//                                }
+//                            }.frame(height: 200)
                             
                             
                         }.padding(.horizontal)
@@ -79,9 +82,9 @@ struct HomeView: View {
                             ForEach(healthManger.activities.sorted(by: {$0.value.id < $1.value.id}), id: \.key) { item in
                                 ActivtyCstmesView(activty: item.value)
                             }
-                        }
+                        }.padding(.top)
                         
-                    }
+                    }.padding(.bottom,80)
                     
                 }
             }
@@ -91,6 +94,7 @@ struct HomeView: View {
                 healthManger.fetchTodayCalories()
                 healthManger.fetchTodaySleep()
                 vmUser.exteactCuetData()
+                vmFood.ShowBarSearch = false
             }
         }
     }
@@ -100,15 +104,17 @@ struct HomeView: View {
     HomeView()
         .environmentObject(UserInfoViewModel())
         .environmentObject(HealthManger())
+        .environmentObject(FoodMoldeView())
+    
 }
 
 extension HomeView  {
     
     private var SectionTabBar: some View {
         HStack {
-            NavigationLink {
-                AccountView()
-            } label: {
+            Button(action: {
+                showAccountInfo.toggle()
+            }) {
                 if let image = vmUser.imageProfiles {
                     Image(uiImage: image)
                         .resizable()
@@ -127,6 +133,10 @@ extension HomeView  {
                         .clipShape(Circle())
                 }
             }
+            .sheet(isPresented: $showAccountInfo, content: {
+                AccountView()
+            })
+           
             Spacer()
 
             NavigationLink {
@@ -135,7 +145,8 @@ extension HomeView  {
                 Image(systemName: "bell.badge")
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 20, height: 20)
+                    .foregroundStyle(Color.theme.ColorCaredsSwiftch)
+                    .frame(width: 15, height: 15)
                     .frame(width: 45, height: 45)
                     .background(RoundedRectangle(cornerRadius: .infinity)
                         .stroke(lineWidth: 1.0).foregroundStyle(Color.gray.opacity(0.5)))

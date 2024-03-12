@@ -30,6 +30,15 @@
 		C78FA2082B9DFF12000D1838 /* LoadingImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA2072B9DFF12000D1838 /* LoadingImage.swift */; };
 		C78FA20A2B9DFF56000D1838 /* FoodDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA2092B9DFF56000D1838 /* FoodDetailView.swift */; };
 		C78FA20C2B9E0121000D1838 /* ProductDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA20B2B9E0121000D1838 /* ProductDetail.swift */; };
+		C78FA20E2B9E4251000D1838 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA20D2B9E4251000D1838 /* RegistrationView.swift */; };
+		C78FA2102B9EF31E000D1838 /* CutemsButtone.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA20F2B9EF31E000D1838 /* CutemsButtone.swift */; };
+		C78FA2122B9F1887000D1838 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA2112B9F1887000D1838 /* ProfileView.swift */; };
+		C78FA2142B9F20CF000D1838 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA2132B9F20CF000D1838 /* LaunchView.swift */; };
+		C78FA2162BA03F9A000D1838 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA2152BA03F9A000D1838 /* SignInView.swift */; };
+		C78FA2192BA04E88000D1838 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA2182BA04E88000D1838 /* OnboardingView.swift */; };
+		C78FA21B2BA05B89000D1838 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA21A2BA05B89000D1838 /* WelcomeView.swift */; };
+		C78FA21D2BA05B99000D1838 /* InformationUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA21C2BA05B99000D1838 /* InformationUser.swift */; };
+		C78FA21F2BA05BAF000D1838 /* GoalUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78FA21E2BA05BAE000D1838 /* GoalUserView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +67,15 @@
 		C78FA2072B9DFF12000D1838 /* LoadingImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingImage.swift; sourceTree = "<group>"; };
 		C78FA2092B9DFF56000D1838 /* FoodDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDetailView.swift; sourceTree = "<group>"; };
 		C78FA20B2B9E0121000D1838 /* ProductDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetail.swift; sourceTree = "<group>"; };
+		C78FA20D2B9E4251000D1838 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+		C78FA20F2B9EF31E000D1838 /* CutemsButtone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutemsButtone.swift; sourceTree = "<group>"; };
+		C78FA2112B9F1887000D1838 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		C78FA2132B9F20CF000D1838 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		C78FA2152BA03F9A000D1838 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		C78FA2182BA04E88000D1838 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		C78FA21A2BA05B89000D1838 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		C78FA21C2BA05B99000D1838 /* InformationUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationUser.swift; sourceTree = "<group>"; };
+		C78FA21E2BA05BAE000D1838 /* GoalUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalUserView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,8 +155,11 @@
 		C78FA1DA2B9D9CD0000D1838 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				C78FA2112B9F1887000D1838 /* ProfileView.swift */,
 				C78FA1F72B9DAC1B000D1838 /* AccountView.swift */,
+				C78FA20D2B9E4251000D1838 /* RegistrationView.swift */,
 				C78FA2022B9DC390000D1838 /* LoginView.swift */,
+				C78FA2152BA03F9A000D1838 /* SignInView.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -181,6 +202,10 @@
 		C78FA1DF2B9D9D07000D1838 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				C78FA2182BA04E88000D1838 /* OnboardingView.swift */,
+				C78FA21A2BA05B89000D1838 /* WelcomeView.swift */,
+				C78FA21C2BA05B99000D1838 /* InformationUser.swift */,
+				C78FA21E2BA05BAE000D1838 /* GoalUserView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -208,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				C78FA1ED2B9D9E5A000D1838 /* LaunchScreen.storyboard */,
+				C78FA2132B9F20CF000D1838 /* LaunchView.swift */,
 			);
 			path = LaunchView;
 			sourceTree = "<group>";
@@ -226,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				C78FA2072B9DFF12000D1838 /* LoadingImage.swift */,
+				C78FA20F2B9EF31E000D1838 /* CutemsButtone.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -302,23 +329,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				C78FA1F82B9DAC1B000D1838 /* AccountView.swift in Sources */,
+				C78FA2142B9F20CF000D1838 /* LaunchView.swift in Sources */,
 				C78FA1E72B9D9DC7000D1838 /* Double.swift in Sources */,
 				C78FA1FE2B9DB841000D1838 /* FoodView.swift in Sources */,
+				C78FA21B2BA05B89000D1838 /* WelcomeView.swift in Sources */,
+				C78FA20E2B9E4251000D1838 /* RegistrationView.swift in Sources */,
 				C78FA1E22B9D9D74000D1838 /* HealthManger.swift in Sources */,
 				C78FA1F02B9D9ECA000D1838 /* TabBarView.swift in Sources */,
+				C78FA2102B9EF31E000D1838 /* CutemsButtone.swift in Sources */,
 				C78FA20A2B9DFF56000D1838 /* FoodDetailView.swift in Sources */,
+				C78FA2162BA03F9A000D1838 /* SignInView.swift in Sources */,
 				C78FA20C2B9E0121000D1838 /* ProductDetail.swift in Sources */,
+				C78FA2192BA04E88000D1838 /* OnboardingView.swift in Sources */,
 				C78FA1F42B9DAA38000D1838 /* HomeView.swift in Sources */,
 				C78FA1FB2B9DB63B000D1838 /* ActivtyCstmesView.swift in Sources */,
 				C78FA1C92B9D9C30000D1838 /* EasyFitApp.swift in Sources */,
 				C78FA2002B9DBFD1000D1838 /* Color.swift in Sources */,
 				C78FA2052B9DD7C1000D1838 /* FoodMoldeView.swift in Sources */,
+				C78FA21F2BA05BAF000D1838 /* GoalUserView.swift in Sources */,
 				C78FA1F62B9DABDB000D1838 /* UserInfoViewModel.swift in Sources */,
 				C78FA1EB2B9D9E16000D1838 /* ImagePicker.swift in Sources */,
 				C78FA1E42B9D9D8C000D1838 /* ActivtyMolde.swift in Sources */,
+				C78FA2122B9F1887000D1838 /* ProfileView.swift in Sources */,
 				C78FA1E92B9D9DFE000D1838 /* UINavigationControllerEactenions.swift in Sources */,
 				C78FA1D72B9D9C71000D1838 /* CamerSacnerQuerCodeView.swift in Sources */,
 				C78FA2032B9DC390000D1838 /* LoginView.swift in Sources */,
+				C78FA21D2BA05B99000D1838 /* InformationUser.swift in Sources */,
 				C78FA2082B9DFF12000D1838 /* LoadingImage.swift in Sources */,
 				C78FA1F22B9DA858000D1838 /* CornerRadiusStyle.swift in Sources */,
 			);

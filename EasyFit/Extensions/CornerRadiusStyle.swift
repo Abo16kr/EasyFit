@@ -39,7 +39,7 @@ extension View {
 
 struct BackgroundBlurView: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
-        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterial))
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
         DispatchQueue.main.async {
             view.superview?.superview?.backgroundColor = .clear
         }
@@ -47,4 +47,34 @@ struct BackgroundBlurView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {}
+}
+
+
+
+struct BackdropView: UIViewRepresentable {
+
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        let view = UIVisualEffectView()
+        let blur = UIBlurEffect()
+        let animator = UIViewPropertyAnimator()
+        animator.addAnimations { view.effect = blur }
+        animator.fractionComplete = 0
+        animator.stopAnimation(false)
+        animator.finishAnimation(at: .current)
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) { }
+    
+}
+
+struct BackdropBlurView: View {
+    
+    let radius: CGFloat
+    
+    @ViewBuilder
+    var body: some View {
+        BackdropView().blur(radius: radius)
+    }
+    
 }

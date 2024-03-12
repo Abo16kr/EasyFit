@@ -1,13 +1,13 @@
 //
-//  AccountView.swift
+//  ProfileView.swift
 //  EasyFit
 //
-//  Created by Abobakr Al Zain  on 10.03.2024.
+//  Created by Abobakr Al Zain  on 11.03.2024.
 //
 
 import SwiftUI
 
-struct AccountView: View {
+struct ProfileView: View {
     
     @EnvironmentObject var vmUser : UserInfoViewModel
     @State var image = UIImage()
@@ -40,9 +40,9 @@ struct AccountView: View {
 }
 
 
-struct AccountView_Previews: PreviewProvider {
+struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountView()
+        ProfileView()
             .environmentObject(UserInfoViewModel())
            
     }
@@ -50,8 +50,8 @@ struct AccountView_Previews: PreviewProvider {
 
 
 
-extension AccountView {
-    
+extension ProfileView {
+
     private var SecationAccount: some View {
         HStack(alignment: .center,spacing: 10) {
             ZStack {
@@ -91,7 +91,12 @@ extension AccountView {
         }.padding(.all,10)
             .background(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 1)
             .foregroundStyle(Color.gray))
-            .background(Color.gray.opacity(0.5))            
+            .background(
+                Image("RetangelsGr2")
+                    .resizable()
+                    .opacity(0.4)
+            )
+//            .background(Color.gray.opacity(0.5))
             .clipShape(.rect(cornerRadius: 10))
 
     }
@@ -140,20 +145,29 @@ extension AccountView {
                 }
             }
             .matchedGeometryEffect(id: "imageProfes", in: AccountImage)
-            
-            Button(action: {showSheet.toggle()}){
-                if vmUser.imageProfiles == nil { Text("Section Image") } else { Text("Change photo")}
-            }.padding(.top,10)
-                .font(.system(size: 16,weight: .regular))
-                .sheet(isPresented: $showSheet) {
-                    ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
+            HStack {
+                Button(action: {showSheet.toggle()}){
+                    if vmUser.imageProfiles == nil { Text("Section Image") } else { Text("Change photo")}
                 }
+                    .font(.system(size: 16,weight: .regular))
+                    .sheet(isPresented: $showSheet) {
+                        ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
+                    }
+                
+                
+                Button(action: {
+                    vmUser.saveImage(imageName: "imagePrilesKeySaved", image: image, key: "imagePrilesKeySaved")
+                }){
+                    Text("Save Photo")
+                        .matchedGeometryEffect(id: "AccountName", in: AccountName)
+                }
+            }.padding(.top,10)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text("Edit Name")
                     .font(.system(size: 16,weight: .regular))
                     .padding(.all,5)
-                TextField("AboBakr", text: $vmUser.currentUserName)
+                TextField("", text: $vmUser.currentUserName)
                     .frame(height: 50)
                     .padding(.leading)
                     .background(Color.gray.opacity(0.5))
@@ -161,12 +175,6 @@ extension AccountView {
                     .clipShape(.rect(cornerRadius: 10))
             }.matchedGeometryEffect(id: "UserName", in: AccountName)
 
-            Button(action: {
-                vmUser.saveImage(imageName: "imagePrilesKeySaved", image: image, key: "imagePrilesKeySaved")
-            }){
-                Text("Save Image")
-                    .matchedGeometryEffect(id: "AccountName", in: AccountName)
-            }
 
         }
     }

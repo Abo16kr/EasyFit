@@ -18,6 +18,10 @@ struct LoginView: View {
     let timer = Timer.publish(every: 2, on: .main, in: .common).autoconnect()
     @State private var scaleValue: CGFloat = 1.0
     
+    @State private var ShowOpneSingView = false
+    @State private var ShowOpneCreatinAcView = false
+    
+    
     var body: some View {
         ZStack {
             
@@ -87,7 +91,7 @@ struct LoginView: View {
                 }.padding(.bottom)
                 
                 VStack(alignment: .center, spacing: 16) {
-                    Button(action: {}){
+                    Button(action: {ShowOpneCreatinAcView.toggle()}){
                         Text("Create Account")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundStyle(Color.white)
@@ -96,8 +100,13 @@ struct LoginView: View {
                             .clipShape(.rect(cornerRadius: 30))
                             .padding(.horizontal)
                     }
+                    .fullScreenCover(isPresented: $ShowOpneCreatinAcView) {
+                        RegistrationView()
+                    }
                     
-                    Button(action: {}){
+                    Button(action: {
+                        ShowOpneSingView.toggle()
+                    }){
                         Text("Sign In")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundStyle(Color.black)
@@ -106,6 +115,9 @@ struct LoginView: View {
                             .clipShape(.rect(cornerRadius: 30))
                             .padding(.horizontal)
                         
+                    }
+                    .fullScreenCover(isPresented: $ShowOpneSingView) {
+                        SignInView()
                     }
                 }.padding(.bottom)
             }

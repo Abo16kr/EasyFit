@@ -16,7 +16,7 @@ struct ProductResponse: Decodable {
 }
 
 // Detail model of the product
-struct ProductDetail: Decodable {
+struct ProductDetail: Codable {
     var id: String?
     var name: String?
     var brands: String?
@@ -24,6 +24,7 @@ struct ProductDetail: Decodable {
     var ingredientsText: String?
     var nutriments: Nutriments?
     var imageUrl: String?
+    var calories: Double?
     
     enum CodingKeys: String, CodingKey {
         case id = "code"
@@ -32,12 +33,13 @@ struct ProductDetail: Decodable {
         case quantity
         case ingredientsText = "ingredients_text"
         case nutriments
+        case calories
         case imageUrl = "image_front_url"
     }
 }
 
 // Nutritional information model
-struct Nutriments: Decodable {
+struct Nutriments: Codable {
     var energy: Double?
     var proteins: Double?
     var fat: Double?
@@ -56,6 +58,3 @@ struct Nutriments: Decodable {
         case fiber = "fiber_100g"
     }
 }
-
-
-

@@ -14,11 +14,11 @@ struct ActivtyCstmesView: View {
             
             Text(activty.title)
                 .font(.system(size: 15,weight: .regular))
-                .foregroundStyle(Color.black)
+//                .foregroundStyle(Color.black)
             
             
             Text(activty.amount)
-                .foregroundStyle(Color.black)
+//                .foregroundStyle(Color.black)
                 .font(.system(size: 25,weight: .regular))
             
             Image(systemName: activty.image)
@@ -33,7 +33,7 @@ struct ActivtyCstmesView: View {
             .background(RoundedRectangle(cornerRadius: 20)
             .stroke(lineWidth: 1)
             .foregroundColor(Color.gray.opacity(0.4)))
-            .background(Color(red: 0.957, green: 0.957, blue: 0.957))
+            .background(Color.theme.ColorCareds)
             .clipShape(.rect(cornerRadius: 20))
             .padding(.horizontal)
     }

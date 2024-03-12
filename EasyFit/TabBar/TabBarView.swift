@@ -21,7 +21,7 @@ struct TabBarView: View {
                 case .newsFeed:
                     Text("newsFeedView")
                 case .profile:
-                    Text("profileView")
+                    ProfileView()
                 }
             }
             VStack {
@@ -46,6 +46,7 @@ struct TabBarView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.horizontal)
                 }
+                
             }
             .frame(height: 50)
             .frame(maxWidth: .infinity)
@@ -57,6 +58,8 @@ struct TabBarView: View {
 
             
         }
+        .ignoresSafeArea(.keyboard)
+
     }
 }
 
@@ -64,6 +67,8 @@ struct TabBarView: View {
     TabBarView()
         .environmentObject(UserInfoViewModel())
         .environmentObject(HealthManger())
+        .environmentObject(FoodMoldeView())
+
 }
 
 
