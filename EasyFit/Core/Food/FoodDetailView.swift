@@ -21,7 +21,7 @@ struct FoodDetailView: View {
                                 ZStack(alignment: .bottomLeading) {
                                     
                                     LoadingImage(urlImage: imageUrl)
-                                        .scaledToFill()
+                                        .scaledToFit()
                                         .frame(maxWidth: .infinity)
                                         .frame(height: 300)
                                         .background(Color.gray.opacity(0.5))
@@ -33,15 +33,22 @@ struct FoodDetailView: View {
                                     
                                     Text(product.name ?? "Product Name")
                                         .padding(.all)
+                                        .lineLimit(2)
                                         .font(.system(size: 22, weight: .semibold))
                                         .frame(maxWidth: .infinity,alignment: .leading)
                                         .foregroundStyle(Color.white)
                                         .cornerRadius(22, corners: [.bottomLeft,.bottomRight])
-                                    
+                                    Image(systemName: "x.circle.fill")
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 25, height: 25)
+                                        .frame(maxWidth: .infinity,maxHeight: .infinity,alignment: .topLeading)
+                                        .padding(.all)
+                                        .onTapGesture { dismiss() }
                                 }
                                 .background(Color.gray.opacity(0.5))
                                 .cornerRadius(22, corners: [.bottomLeft,.bottomRight])
-
+                                
                             }
                             
                             VStack(alignment: .leading) {
@@ -55,10 +62,10 @@ struct FoodDetailView: View {
                                 Text("Ingredients: \(product.ingredientsText ?? "N/A")")
                                     .font(.system(size: 15,weight: .regular))
                             }.padding(.all)
-                                .frame(maxWidth: .infinity)
+                                .frame(maxWidth: .infinity,alignment: .leading)
                                 .background(RoundedRectangle(cornerRadius: 22)
-                                .stroke(lineWidth: 1.0)
-                                .foregroundStyle(Color.theme.Green2manColor))
+                                    .stroke(lineWidth: 1.0)
+                                    .foregroundStyle(Color.theme.Green2manColor))
                                 .padding(.all)
                             
                             if let nutriments = product.nutriments {
@@ -108,7 +115,7 @@ struct FoodDetailView: View {
                                         }
                                         Text("\(nutriments.carbohydrates ?? 0) g")
                                             .font(.system(size: 15, weight: .regular))
-                                            
+                                        
                                     }
                                     
                                 }.padding(.all)
@@ -140,10 +147,13 @@ struct FoodDetailView: View {
                                 .padding(.all)
                         }
                     }.padding(.bottom,90)
-                   
+                    
                 }
+                
+                
                 Button(action: {
-                    if let currentProduct = viewModel.productDetail {
+                    if var currentProduct = viewModel.productDetail {
+                        currentProduct.addedDate = Date() // Set the current date
                         viewModel.addedProducts.append(currentProduct)
                         viewModel.saveProducts()
                         dismiss()
@@ -151,7 +161,6 @@ struct FoodDetailView: View {
                 }) {
                     CutemsButtone(title: "Add", cornerRadius: 10, iconeHave: true)
                 }
-
             }
         }
     }

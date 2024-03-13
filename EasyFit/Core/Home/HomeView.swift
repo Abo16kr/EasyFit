@@ -11,7 +11,8 @@ import Charts
 struct HomeView: View {
     @State private var averageIsShown = false
     @State var showAccountInfo: Bool = false
-
+    
+    @EnvironmentObject var vmTabBar: ModleViewTabBar
     @EnvironmentObject var vmUser : UserInfoViewModel
     @EnvironmentObject var healthManger :  HealthManger
     @EnvironmentObject var vmFood: FoodMoldeView
@@ -30,7 +31,7 @@ struct HomeView: View {
         NavigationStack {
             ZStack {
                 Color.theme.ColorBagronedSwich.ignoresSafeArea(.all)
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading) {
                         
                         SectionTabBar
@@ -45,48 +46,32 @@ struct HomeView: View {
                         
                         
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("Your daily health statistics")
+                            LazyVGrid(columns: columns,alignment: .center){
+                                ForEach(healthManger.activities.sorted(by: {$0.value.id < $1.value.id}), id: \.key) { item in
+                                    ActivtyCstmesView(activty: item.value)
+                                }
+                            }.padding(.top)
+                        }
+                        
+                        VStack(alignment: .leading){
+                            Text("Your daily body")
                                 .font(.system(size: 15, weight: .regular))
-
-//                            Chart {
-//                                ForEach(healthData) { data in
-//                                    // Steps line
-//                                    LineMark(
-//                                        x: .value("Date", data.date, unit: .day),
-//                                        y: .value("Steps", data.steps)
-//                                    )
-//                                    .foregroundStyle(.blue)
-//                                    
-//                                    // Calories line
-//                                    LineMark(
-//                                        x: .value("Date", data.date, unit: .day),
-//                                        y: .value("Calories", data.calories)
-//                                    )
-//                                    .foregroundStyle(.red)
-//                                    
-//                                    // Sleep hours line
-//                                    LineMark(
-//                                        x: .value("Date", data.date, unit: .day),
-//                                        y: .value("Sleep Hours", data.sleepHours)
-//                                    )
-//                                    .foregroundStyle(.green)
-//                                }
-//                            }.frame(height: 200)
+                                .padding(.all)
                             
-                            
-                        }.padding(.horizontal)
-                        
-                        
-                        
-                        LazyVGrid(columns: columns,alignment: .center){
-                            ForEach(healthManger.activities.sorted(by: {$0.value.id < $1.value.id}), id: \.key) { item in
-                                ActivtyCstmesView(activty: item.value)
+                            ScrollView(.horizontal,showsIndicators: false) {
+                                HStack(spacing: 10) {
+                                    NavigationLink { DailyWaterDitelsView() } label: {
+                                        DailyWaterView()
+                                            .foregroundStyle(Color.theme.ColorCaredsSwiftch)
+                                    }
+                                    
+                                }.padding(.horizontal)
                             }
-                        }.padding(.top)
-                        
+                        }
                     }.padding(.bottom,80)
                     
                 }
+                .navigationTitle("EasyFit").navigationBarTitleDisplayMode(.inline)
             }
             .onAppear {
                 vmUser.loadImage(forKey: "imagePrilesKeySaved")
@@ -94,7 +79,7 @@ struct HomeView: View {
                 healthManger.fetchTodayCalories()
                 healthManger.fetchTodaySleep()
                 vmUser.exteactCuetData()
-                vmFood.ShowBarSearch = false
+                vmTabBar.dissmisBarSaerch = false
             }
         }
     }
@@ -133,9 +118,10 @@ extension HomeView  {
                         .clipShape(Circle())
                 }
             }
-            .sheet(isPresented: $showAccountInfo, content: {
+            .sheet(isPresented: $showAccountInfo){
                 AccountView()
-            })
+                    .presentationDetents([.medium])
+            }
            
             Spacer()
 
@@ -166,3 +152,29 @@ struct DailyHealthData: Identifiable {
     var calories: Int
     var sleepHours: Double
 }
+
+//                            Chart {
+//                                ForEach(healthData) { data in
+//                                    // Steps line
+//                                    LineMark(
+//                                        x: .value("Date", data.date, unit: .day),
+//                                        y: .value("Steps", data.steps)
+//                                    )
+//                                    .foregroundStyle(.blue)
+//
+//                                    // Calories line
+//                                    LineMark(
+//                                        x: .value("Date", data.date, unit: .day),
+//                                        y: .value("Calories", data.calories)
+//                                    )
+//                                    .foregroundStyle(.red)
+//
+//                                    // Sleep hours line
+//                                    LineMark(
+//                                        x: .value("Date", data.date, unit: .day),
+//                                        y: .value("Sleep Hours", data.sleepHours)
+//                                    )
+//                                    .foregroundStyle(.green)
+//                                }
+//                            }.frame(height: 200)
+                            

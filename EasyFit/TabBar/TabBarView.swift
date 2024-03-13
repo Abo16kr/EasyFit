@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TabBarView: View {
     @State var sectionTabBar: tabBarView = .home
+    @Binding var isDarkMode: Bool
     var body: some View {
         ZStack {
             
@@ -19,9 +20,9 @@ struct TabBarView: View {
                 case .food:
                     FoodView()
                 case .newsFeed:
-                    Text("newsFeedView")
+                    FeedView()
                 case .profile:
-                    ProfileView()
+                    ProfileView(isDarkMode: $isDarkMode)
                 }
             }
             VStack {
@@ -64,7 +65,7 @@ struct TabBarView: View {
 }
 
 #Preview {
-    TabBarView()
+    TabBarView(isDarkMode: .constant(false))
         .environmentObject(UserInfoViewModel())
         .environmentObject(HealthManger())
         .environmentObject(FoodMoldeView())
@@ -96,3 +97,8 @@ let moldeTabBar : [MoldeTabBar] = [
 
 
 
+
+class ModleViewTabBar: ObservableObject {
+    @Published var dissmisBarSaerch: Bool = false
+    @Published var dissmisBarSaerchFeed: Bool = false
+}

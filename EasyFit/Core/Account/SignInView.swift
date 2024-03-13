@@ -25,7 +25,7 @@ struct SignInView: View {
                     .frame(maxWidth: .infinity,alignment: .trailing)
                     .padding(.all)
                     .onTapGesture {
-                        dismiss
+                        dismiss()
                     }
                 VStack {
                     Text("Sign In")

@@ -15,9 +15,23 @@ class FoodMoldeView: ObservableObject {
     // Add this line to store the list of added products
     @Published var addedProducts: [ProductDetail] = []
     
+    @Published var isLoadingData: Bool = true
+
     @Published private var showDetail = false
-    
     @Published var ShowBarSearch: Bool = false
+    @Published var ShowBarSearchFeed: Bool = false
+
+    
+    @Published var dailyLists: [DailyList] = []
+       
+    func fetchList(for date: Date) -> DailyList? {
+        let filteredProducts = addedProducts.filter { product in
+            guard let addedDate = product.addedDate else { return false }
+            return Calendar.current.isDate(addedDate, inSameDayAs: date)
+        }
+        return filteredProducts.isEmpty ? nil : DailyList(date: date, items: filteredProducts)
+    }
+
     
     func fetchProduct(barcode: String) {
         let urlString = "https://world.openfoodfacts.org/api/v0/product/\(barcode).json"
@@ -32,15 +46,38 @@ class FoodMoldeView: ObservableObject {
                 print("Error fetching data: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }
-            
             if let decodedResponse = try? JSONDecoder().decode(ProductResponse.self, from: data) {
                 DispatchQueue.main.async {
+                    self?.isLoadingData = false
                     self?.productDetail = decodedResponse.product
                 }
+                
             }
         }.resume()
     }
-    
+   
+    // In your ViewModel
+    func totalCalories(for date: Date) -> Double {
+        let dailyProducts = fetchList(for: date)?.items ?? []
+        return dailyProducts.reduce(0) { $0 + calculateCalories(for: $1) }
+    }
+
+    func totalProtein(for date: Date) -> Double {
+        let dailyProducts = fetchList(for: date)?.items ?? []
+        return dailyProducts.reduce(0) { $0 + ($1.nutriments?.proteins ?? 0) }
+    }
+
+    func totalCarbs(for date: Date) -> Double {
+        let dailyProducts = fetchList(for: date)?.items ?? []
+        return dailyProducts.reduce(0) { $0 + ($1.nutriments?.carbohydrates ?? 0) }
+    }
+
+    func totalFats(for date: Date) -> Double {
+        let dailyProducts = fetchList(for: date)?.items ?? []
+        return dailyProducts.reduce(0) { $0 + ($1.nutriments?.fat ?? 0) }
+    }
+
+
     
     func calculateTotalNutrition() -> (calories: Double, protein: Double, carbs: Double, fats: Double) {
         var totalCalories = 0.0
@@ -80,7 +117,8 @@ class FoodMoldeView: ObservableObject {
        
        var totalCalories: Double {
            addedProducts.reduce(0) { $0 + calculateCalories(for: $1) }
-       }
+       } 
+
        
        func calculateCalories(for product: ProductDetail) -> Double {
            // Assuming calories calculation is based on macros,

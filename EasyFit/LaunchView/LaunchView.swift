@@ -19,6 +19,7 @@ struct LaunchView: View {
         ZStack {
             Color.theme.ColorBagronedSwich.ignoresSafeArea(.all)
             VStack {
+                Spacer()
                 HStack(alignment: .bottom,spacing: 0) {
                     Text("EasyFit")
                         .font(.system(size: 40, weight: .bold, design: .monospaced))
@@ -31,8 +32,11 @@ struct LaunchView: View {
                         .offset(y: -5)
                         .offset(x: showImagesMan ? 0 : 300)
                         .opacity(showImagesMan ? 1 : 0)
-                }
-                
+                }.offset(y: 40)
+                Spacer()
+                ActivityIndicator()
+                    .frame(width: 70, height: 70)
+               
             }
             .onAppear {
                 withAnimation(.easeInOut(duration: 0.5)){

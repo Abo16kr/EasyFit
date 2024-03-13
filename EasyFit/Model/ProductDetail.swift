@@ -16,7 +16,7 @@ struct ProductResponse: Decodable {
 }
 
 // Detail model of the product
-struct ProductDetail: Codable {
+struct ProductDetail: Codable,Identifiable {
     var id: String?
     var name: String?
     var brands: String?
@@ -25,6 +25,8 @@ struct ProductDetail: Codable {
     var nutriments: Nutriments?
     var imageUrl: String?
     var calories: Double?
+    // Existing properties...
+    var addedDate: Date?
     
     enum CodingKeys: String, CodingKey {
         case id = "code"
@@ -35,6 +37,7 @@ struct ProductDetail: Codable {
         case nutriments
         case calories
         case imageUrl = "image_front_url"
+        case addedDate
     }
 }
 
@@ -57,4 +60,11 @@ struct Nutriments: Codable {
         case salt = "salt_100g"
         case fiber = "fiber_100g"
     }
+}
+
+
+struct DailyList: Identifiable {
+    var id = UUID().uuidString
+    var date: Date
+    var items: [ProductDetail]
 }
