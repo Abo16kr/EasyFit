@@ -72,13 +72,39 @@ struct HomeView: View {
                     
                 }
                 .navigationTitle("EasyFit").navigationBarTitleDisplayMode(.inline)
+                
+                if showAccountInfo {
+                    ZStack {
+                        Color.black.opacity(0.7).ignoresSafeArea(.all)
+                        if let image = vmUser.imageProfiles {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 200, height: 200)
+                                .background(Color.gray.opacity(0.5))
+                                .clipShape(Circle())
+                        } else if vmUser.imageProfiles == nil {
+                           Image(systemName: "person.and.background.dotted")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 200, height: 200)
+                                .foregroundStyle(Color.gray.opacity(0.5))
+                                .frame(width: 200, height: 200)
+                                .background(Color.gray.opacity(0.5))
+                                .clipShape(Circle())
+                        }
+                    }.onTapGesture {
+                        withAnimation(.spring){
+                            showAccountInfo.toggle()
+                        }
+                    }
+                }
             }
             .onAppear {
                 vmUser.loadImage(forKey: "imagePrilesKeySaved")
                 healthManger.fetchTodaySteps()
                 healthManger.fetchTodayCalories()
                 healthManger.fetchTodaySleep()
-                vmUser.exteactCuetData()
                 vmTabBar.dissmisBarSaerch = false
             }
         }
@@ -90,6 +116,7 @@ struct HomeView: View {
         .environmentObject(UserInfoViewModel())
         .environmentObject(HealthManger())
         .environmentObject(FoodMoldeView())
+        .environmentObject(ModleViewTabBar())
     
 }
 
@@ -98,7 +125,9 @@ extension HomeView  {
     private var SectionTabBar: some View {
         HStack {
             Button(action: {
-                showAccountInfo.toggle()
+                withAnimation(.spring){
+                    showAccountInfo.toggle()
+                }
             }) {
                 if let image = vmUser.imageProfiles {
                     Image(uiImage: image)
@@ -117,10 +146,6 @@ extension HomeView  {
                         .background(Color.gray.opacity(0.5))
                         .clipShape(Circle())
                 }
-            }
-            .sheet(isPresented: $showAccountInfo){
-                AccountView()
-                    .presentationDetents([.medium])
             }
            
             Spacer()
@@ -144,37 +169,3 @@ extension HomeView  {
 }
 
 
-
-struct DailyHealthData: Identifiable {
-    let id = UUID()
-    let date: Date
-    var steps: Int
-    var calories: Int
-    var sleepHours: Double
-}
-
-//                            Chart {
-//                                ForEach(healthData) { data in
-//                                    // Steps line
-//                                    LineMark(
-//                                        x: .value("Date", data.date, unit: .day),
-//                                        y: .value("Steps", data.steps)
-//                                    )
-//                                    .foregroundStyle(.blue)
-//
-//                                    // Calories line
-//                                    LineMark(
-//                                        x: .value("Date", data.date, unit: .day),
-//                                        y: .value("Calories", data.calories)
-//                                    )
-//                                    .foregroundStyle(.red)
-//
-//                                    // Sleep hours line
-//                                    LineMark(
-//                                        x: .value("Date", data.date, unit: .day),
-//                                        y: .value("Sleep Hours", data.sleepHours)
-//                                    )
-//                                    .foregroundStyle(.green)
-//                                }
-//                            }.frame(height: 200)
-                            

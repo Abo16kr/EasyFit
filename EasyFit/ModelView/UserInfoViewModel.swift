@@ -33,7 +33,7 @@ class UserInfoViewModel: ObservableObject {
     @Published var imageProfiles: UIImage?
     @Published var savedimages: Bool = false
     
-    
+    @Published var selectedImage: UIImage? = nil
     
     func saveImage(imageName: String, image: UIImage,key: String) {
         guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
@@ -65,43 +65,43 @@ class UserInfoViewModel: ObservableObject {
         }
     }
     
-    func exteactCuetData() {
-        let calendar = Calendar.current
-        let weake = calendar.dateInterval(of: .weekOfMonth, for: Date())
-        
-        guard let firtDay = weake?.start else {
-            return
-        }
-        (0..<7).forEach { day in
-            if let weakeDay = calendar.date(byAdding: .day, value: day, to: firtDay){
-                cruuentWeek.append(weakeDay)
-            }
-        }
-    }
-    
-    func getDateFormat(date: Date) -> String {
-        let formaterDate = DateFormatter()
-        formaterDate.dateFormat = (isSameDay(date1: cruuentDay, date2: date) ? "dd" : "dd" )
-        
-        return (isDateToday(date: date) && isSameDay(date1: cruuentDay, date2: date) ? "" : "") + formaterDate.string(from: date)
-        
-    }
-    func extracDate(date: Date) -> String {
-        let formter  = DateFormatter()
-        formter.dateFormat = (isSameDay(date1: cruuentDay, date2: date) ? "E dd" : "E dd" )
-//        formter.dateFormat = (isSameDay(date1: cruuentDay, date2: date) ? "MMM " : "dd" )
-        return (isDateToday(date: date) && isSameDay(date1: cruuentDay, date2: date) ? "" : "") + formter.string(from: date)
-    }
-    
-    func isDateToday(date: Date) -> Bool {
-        let calendar =  Calendar.current
-        return calendar.isDateInToday(date)
-    }
-    
-    func isSameDay(date1: Date,date2: Date) -> Bool {
-        let calendar =  Calendar.current
-        return calendar.isDate(date1, inSameDayAs: date2)
-    }
+//    func exteactCuetData() {
+//        let calendar = Calendar.current
+//        let weake = calendar.dateInterval(of: .weekOfMonth, for: Date())
+//        
+//        guard let firtDay = weake?.start else {
+//            return
+//        }
+//        (0..<7).forEach { day in
+//            if let weakeDay = calendar.date(byAdding: .day, value: day, to: firtDay){
+//                cruuentWeek.append(weakeDay)
+//            }
+//        }
+//    }
+//    
+//    func getDateFormat(date: Date) -> String {
+//        let formaterDate = DateFormatter()
+//        formaterDate.dateFormat = (isSameDay(date1: cruuentDay, date2: date) ? "dd" : "dd" )
+//        
+//        return (isDateToday(date: date) && isSameDay(date1: cruuentDay, date2: date) ? "" : "") + formaterDate.string(from: date)
+//        
+//    }
+//    func extracDate(date: Date) -> String {
+//        let formter  = DateFormatter()
+//        formter.dateFormat = (isSameDay(date1: cruuentDay, date2: date) ? "E dd" : "E dd" )
+////        formter.dateFormat = (isSameDay(date1: cruuentDay, date2: date) ? "MMM " : "dd" )
+//        return (isDateToday(date: date) && isSameDay(date1: cruuentDay, date2: date) ? "" : "") + formter.string(from: date)
+//    }
+//    
+//    func isDateToday(date: Date) -> Bool {
+//        let calendar =  Calendar.current
+//        return calendar.isDateInToday(date)
+//    }
+//    
+//    func isSameDay(date1: Date,date2: Date) -> Bool {
+//        let calendar =  Calendar.current
+//        return calendar.isDate(date1, inSameDayAs: date2)
+//    }
     
 }
 

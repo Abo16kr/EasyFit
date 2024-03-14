@@ -19,8 +19,6 @@ struct TabBarView: View {
                     HomeView()
                 case .food:
                     FoodView()
-                case .newsFeed:
-                    FeedView()
                 case .profile:
                     ProfileView(isDarkMode: $isDarkMode)
                 }
@@ -69,6 +67,7 @@ struct TabBarView: View {
         .environmentObject(UserInfoViewModel())
         .environmentObject(HealthManger())
         .environmentObject(FoodMoldeView())
+        .environmentObject(ModleViewTabBar())
 
 }
 
@@ -84,14 +83,12 @@ struct MoldeTabBar: Identifiable {
 enum tabBarView {
     case home
     case food
-    case newsFeed
     case profile
 }
 
 let moldeTabBar : [MoldeTabBar] = [
     MoldeTabBar(name: "Home", icone: "iconhome", tabBar: .home),
-    MoldeTabBar(name: "Food", icone: "IconeFood", tabBar: .food),
-    MoldeTabBar(name: "News", icone: "IconNews", tabBar: .newsFeed),
+    MoldeTabBar(name: "Meals", icone: "IconeFood", tabBar: .food),
     MoldeTabBar(name: "Profile", icone: "iconProfile", tabBar: .profile),
 ]
 

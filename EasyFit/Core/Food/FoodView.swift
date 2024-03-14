@@ -8,7 +8,6 @@
 import SwiftUI
 import Combine
 
-
 struct FoodView: View {
     
     @EnvironmentObject var vmUser: UserInfoViewModel
@@ -111,7 +110,9 @@ struct FoodView: View {
                                                     HStack(alignment: .bottom, spacing: 10) {
                                                         Image(systemName: "flame.fill")
                                                             .foregroundStyle(Color.theme.GreenColorMain)
-                                                        Text("\(vmFood.calculateCalories(for: product))")
+                                                        Text("\(String(format: "%.2f", vmFood.calculateCalories(for: product, gramsConsumed: vmFood.gramsConsumed)))")
+
+                                                        
                                                             .font(.system(size: 16, weight: .regular))
                                                         Text("cal")
                                                             .font(.system(size: 14, weight: .regular))

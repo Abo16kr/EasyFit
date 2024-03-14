@@ -16,12 +16,13 @@ class FoodMoldeView: ObservableObject {
     @Published var addedProducts: [ProductDetail] = []
     
     @Published var isLoadingData: Bool = true
+    @Published var noDataAvailable = false // New state variable
 
     @Published private var showDetail = false
     @Published var ShowBarSearch: Bool = false
     @Published var ShowBarSearchFeed: Bool = false
 
-    
+    @Published var gramsConsumed: Double = 100 
     @Published var dailyLists: [DailyList] = []
        
     func fetchList(for date: Date) -> DailyList? {
@@ -41,9 +42,15 @@ class FoodMoldeView: ObservableObject {
             return
         }
         
+        noDataAvailable = false
+        
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             guard let data = data, error == nil else {
                 print("Error fetching data: \(error?.localizedDescription ?? "Unknown error")")
+                DispatchQueue.main.async {
+                    self?.isLoadingData = false
+                    self?.noDataAvailable = true 
+                }
                 return
             }
             if let decodedResponse = try? JSONDecoder().decode(ProductResponse.self, from: data) {
@@ -51,7 +58,6 @@ class FoodMoldeView: ObservableObject {
                     self?.isLoadingData = false
                     self?.productDetail = decodedResponse.product
                 }
-                
             }
         }.resume()
     }
@@ -59,7 +65,7 @@ class FoodMoldeView: ObservableObject {
     // In your ViewModel
     func totalCalories(for date: Date) -> Double {
         let dailyProducts = fetchList(for: date)?.items ?? []
-        return dailyProducts.reduce(0) { $0 + calculateCalories(for: $1) }
+        return Double(dailyProducts.reduce(0) { $0 + calculateCalories(for: $1) })
     }
 
     func totalProtein(for date: Date) -> Double {
@@ -116,18 +122,17 @@ class FoodMoldeView: ObservableObject {
        }
        
        var totalCalories: Double {
-           addedProducts.reduce(0) { $0 + calculateCalories(for: $1) }
+           Double(addedProducts.reduce(0) { $0 + calculateCalories(for: $1) })
        } 
 
        
-       func calculateCalories(for product: ProductDetail) -> Double {
-           // Assuming calories calculation is based on macros,
-           // adjust as needed based on your actual data structure.
-           let proteinCalories = (product.nutriments?.proteins ?? 0) * 4
-           let fatCalories = (product.nutriments?.fat ?? 0) * 9
-           let carbCalories = (product.nutriments?.carbohydrates ?? 0) * 4
-           return proteinCalories + fatCalories + carbCalories
-       }
+    func calculateCalories(for product: ProductDetail, gramsConsumed: Double) -> Double {
+        let proteinCalories = (product.nutriments?.proteins ?? 0) * 4 * gramsConsumed / 100 // Adjust for grams consumed
+        let fatCalories = (product.nutriments?.fat ?? 0) * 9 * gramsConsumed / 100 // Adjust for grams consumed
+        let carbCalories = (product.nutriments?.carbohydrates ?? 0) * 4 * gramsConsumed / 100 // Adjust for grams consumed
+        return proteinCalories + fatCalories + carbCalories
+    }
+
     
     func addProduct() {
          if let productDetail = productDetail {

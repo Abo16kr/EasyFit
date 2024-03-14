@@ -16,18 +16,51 @@ struct ProfileView: View {
     
 
     @Binding var isDarkMode: Bool
+    @State private var birthDate = Date()
+    @State private var age: DateComponents = DateComponents()
     
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.theme.ColorBagronedSwich.ignoresSafeArea(.all)
                 ScrollView {
-                    VStack(alignment: .leading) {
+                    VStack {
 
                       SecationEditAccount
+                        
+                        GroupBox {
+                            
+                            VStack {
+                                DatePicker("Date of Birth", selection: $birthDate, in: ...Date(), displayedComponents: .date)
+                                    .onChange(of: birthDate, perform: { value in
+                                        age = Calendar.current.dateComponents([.year, .month, .day], from: birthDate, to: Date())
+                                    })
+                            }
+                          
+                            Divider()
+
+                            HStack {
+                                Text("Height")
+                                Spacer()
+                                TextField("5’10”", value: vmUser.$currentUserHeight, formatter: NumberFormatter())
+                                    .frame(width: 40)
+                            }
+                            Divider()
+                            
+                            HStack {
+                                Text("Weight")
+                                Spacer()
+                         
+                                TextField("183 lb", value: vmUser.$currentUserWeight, formatter: NumberFormatter())
+                                    .frame(width: 40)
+                            }
+                        }
+                            .padding(.top,41)
+
                         Toggle(isOn: $isDarkMode, label: { Text("Dark Mode") })
+                            .padding(.all)
                     }.padding(.all)
-                        .foregroundStyle(Color.theme.GreenColorMain)
+                        .foregroundStyle(Color.theme.ColorCaredsSwiftch)
 
                 }
             }
@@ -53,67 +86,64 @@ extension ProfileView {
     private var SecationEditAccount: some View {
         VStack {
             ZStack {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 150, height: 150)
-                    .background(Color.gray.opacity(0.5))
-                    .clipShape(Circle())
-                    .padding(1)
-                    .background(RoundedRectangle(cornerRadius: .infinity)
-                            .stroke(lineWidth: 1.0)
-                            .shadow(color: .white, radius: 10)
-                            .foregroundStyle(Color.gray.opacity(0.5)))
-                    .clipShape(Circle())
-                
                 if let image = vmUser.imageProfiles {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 150, height: 150)
-                        .background(Color.gray.opacity(0.5))
+                        .frame(width: 180, height: 180)
                         .clipShape(Circle())
                         .padding(1)
-                        .background(RoundedRectangle(cornerRadius: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: .infinity)
                                 .stroke(lineWidth: 1.0)
                                 .shadow(color: .white, radius: 10)
                                 .foregroundStyle(Color.gray.opacity(0.5))
-                        .clipShape(Circle()))
+                        )
+                } else {
+                    Circle()
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 180, height: 180)
+                        .padding(1)
+                        .background(
+                            RoundedRectangle(cornerRadius: .infinity)
+                                .stroke(lineWidth: 1.0)
+                                .shadow(color: .white, radius: 10)
+                                .foregroundStyle(Color.gray.opacity(0.5))
+                        )
                 }
             }
             HStack {
-                Button(action: {showSheet.toggle()}){
-                    if vmUser.imageProfiles == nil { Text("Section Image") } else { Text("Change photo")}
-                }
-                    .font(.system(size: 16,weight: .regular))
-                    .sheet(isPresented: $showSheet) {
-                        ImagePicker(sourceType: .photoLibrary, selectedImage: self.$image)
-                    }
-                
+                Button(action: { showSheet.toggle() }) {
+                    Text(vmUser.selectedImage == nil ? "Select Image" : "Change Image")
+                        .font(.system(size: 14, weight: .regular))
+
+                }.padding(.all,14)
+                    .background(Color.theme.ColorCareds)
+                    .clipShape(.rect(cornerRadius: 10))
                 
                 Button(action: {
-                    vmUser.saveImage(imageName: "imagePrilesKeySaved", image: image, key: "imagePrilesKeySaved")
-                }){
-                    Text("Save Photo")
-                }
-            }.padding(.top,10)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Edit Name")
-                    .font(.system(size: 16,weight: .regular))
-                    .padding(.all,5)
-                TextField("", text: $vmUser.currentUserName)
-                    .frame(height: 50)
-                    .padding(.leading)
-                    .background(Color.gray.opacity(0.5))
-                    .foregroundStyle(Color.gray.opacity(0.5))
-                    .clipShape(.rect(cornerRadius: 10))
+                    if let image = vmUser.selectedImage {
+                        vmUser.saveImage(imageName: "imagePrilesKeySaved", image: image, key: "imagePrilesKeySaved")
+                    }
+                }) {
+                    Text("Save")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(Color.theme.ColorCaredsSwiftch)
+                }.padding(.all,14)
+                .background(Color.theme.ColorCareds)
+                .clipShape(.rect(cornerRadius: 10))
+            }.padding(.top, 10)
+          
+            .sheet(isPresented: $showSheet) {
+                ImagePicker(selectedImage: $vmUser.selectedImage)
             }
-            
 
-
+           
         }
     }
+
+    
+    
     
     
 }
