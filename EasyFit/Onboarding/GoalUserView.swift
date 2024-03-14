@@ -37,6 +37,7 @@ struct GoalUserView: View {
                         TextField("\(vmUser.currentUserCaloresDay)", value:$vmUser.currentUserCaloresDay, formatter: NumberFormatter())
                             .frame(width: 200)
                             .font(.system(size: 50,weight: .semibold))
+                            .keyboardType(.numberPad)
                             .offset(x: 40)
                         Button(action: {
                             vmUser.currentUserCaloresDay += 1

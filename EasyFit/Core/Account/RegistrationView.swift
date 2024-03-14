@@ -10,7 +10,6 @@ import SwiftUI
 struct RegistrationView: View {
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var UserName: String = ""
     
     @State private var sectionUserName: Bool = false
     @State private var sectionPassword: Bool = false
@@ -20,6 +19,11 @@ struct RegistrationView: View {
     @State private var sectionMale: Bool = false
     @State private var sectionfemale: Bool = false
     @Environment(\.dismiss) var dismiss
+    @State var showOnboarding : Bool = false
+    
+    @EnvironmentObject var vmUser : UserInfoViewModel
+
+    @EnvironmentObject var vmAuth : AuthViewModel
 
     var body: some View {
         ZStack {
@@ -35,18 +39,22 @@ struct RegistrationView: View {
                         dismiss()
                     }
                 VStack {
+
                     Text("Registration")
                         .font(.system(size: 30, weight: .bold))
                         .frame(maxWidth: .infinity,alignment: .leading)
                         .padding(.leading)
                         .padding(.bottom)
-                    
-                    TextField("Name", text: $UserName)
+                    if !vmAuth.errorMessage.isEmpty {
+                        Text(vmAuth.errorMessage)
+                            .foregroundColor(.red)
+                    }
+                    TextField("NameUser", text: $vmUser.currentUserName)
                         .padding(.all)
                         .background(
                             RoundedRectangle(cornerRadius: 16)
                                 .stroke(lineWidth: 1.0)
-                                .foregroundStyle(sectionEmail ? Color.theme.GreenColorMain : Color.gray.opacity(0.4))
+                                .foregroundStyle(sectionUserName ? Color.theme.GreenColorMain : Color.gray.opacity(0.4))
                         )
                         .background(Color.theme.ColorCareds)
                         .cornerRadius(16)
@@ -147,7 +155,12 @@ struct RegistrationView: View {
                     }.padding(.all)
                     Spacer()
 
-                    Button(action: {}, label: {
+                    Button(action: {
+                        vmAuth.registerUser(email: email, password: password)
+                        if vmAuth.isUserAuthenticated {
+                            showOnboarding = true
+                        }
+                    }, label: {
                         Text("Registration")
                             .font(.system(size: 18, weight: .semibold))
                             .padding(.all)
@@ -160,12 +173,17 @@ struct RegistrationView: View {
             
                 }.ignoresSafeArea(.keyboard)
             }
+            .fullScreenCover(isPresented: $showOnboarding) {
+                OnboardingView()
+            }
         }
     }
 }
 
 #Preview {
     RegistrationView()
+        .environmentObject(UserInfoViewModel())
+        .environmentObject(AuthViewModel())
 }
 
 enum sectionSex {

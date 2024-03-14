@@ -279,7 +279,7 @@ struct DayView: View {
 
 struct ScrollDate: View {
     @Binding  var selectedDate : Date
-    private let daysOffset = Array(-4...30)
+    private let daysOffset = Array(-15...30)
     private let dayInSeconds = 86400.0
     
     var body: some View {

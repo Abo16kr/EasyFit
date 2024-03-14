@@ -30,6 +30,11 @@ struct ProfileView: View {
                         
                         GroupBox {
                             
+                            TextField("NameUser", text: $vmUser.currentUserName)
+                            
+                        }.padding(.top,41)
+                        GroupBox {
+                            
                             VStack {
                                 DatePicker("Date of Birth", selection: $birthDate, in: ...Date(), displayedComponents: .date)
                                     .onChange(of: birthDate, perform: { value in
@@ -54,8 +59,18 @@ struct ProfileView: View {
                                 TextField("183 lb", value: vmUser.$currentUserWeight, formatter: NumberFormatter())
                                     .frame(width: 40)
                             }
+                            Divider()
+                            NavigationLink {
+                                GoalUserView(vmUser: vmUser)
+                            } label: {
+                                HStack {
+                                    Text("Calories Goal")
+                                    Spacer()
+                                    Image(systemName: "chevron.forward")
+                                }.padding(.trailing)
+                            }
+                           
                         }
-                            .padding(.top,41)
 
                         Toggle(isOn: $isDarkMode, label: { Text("Dark Mode") })
                             .padding(.all)

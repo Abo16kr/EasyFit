@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct SignInView: View {
     
@@ -14,6 +15,8 @@ struct SignInView: View {
     @State private var sectionPassword: Bool = false
     @State private var sectionEmail: Bool = false
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var vmAuth : AuthViewModel
+    @State var showOnboarding: Bool = false 
     var body: some View {
         ZStack {
             Color.theme.ColorBagronedSwich.ignoresSafeArea(.all)
@@ -33,6 +36,10 @@ struct SignInView: View {
                         .frame(maxWidth: .infinity,alignment: .leading)
                         .padding(.leading)
                     
+                    if !vmAuth.errorMessage.isEmpty {
+                        Text(vmAuth.errorMessage)
+                            .foregroundColor(.red)
+                    }
                     TextField("Email", text: $email)
                         .padding(.all)
                         .background(
@@ -71,7 +78,13 @@ struct SignInView: View {
                         .padding(.top,10)
                     Spacer()
 
-                    Button(action: {}, label: {
+                    Button(action: {
+                        vmAuth.signIn(email: email, password: password)
+
+                        if vmAuth.isSignedIn {
+                            showOnboarding = true
+                        }
+                    }, label: {
                         Text("Sign In")
                             .font(.system(size: 18, weight: .semibold))
                             .padding(.all)
@@ -81,7 +94,9 @@ struct SignInView: View {
                             .clipShape(.rect(cornerRadius: 10))
                             .padding(.all)
                     })
-            
+                    .fullScreenCover(isPresented: $showOnboarding) {
+                        OnboardingView()
+                    }
                 }.padding(.top,60)
                     .ignoresSafeArea(.keyboard)
             }

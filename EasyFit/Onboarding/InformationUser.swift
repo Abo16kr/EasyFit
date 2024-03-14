@@ -36,8 +36,15 @@ struct InformationUser: View {
                     Text("This information ensures fitness and Health data are as accurate as possible.These details are not shared with Apple.")
                         .font(.system(size: 16,weight: .regular))
                         .multilineTextAlignment(.center)
-                }
-               
+                }.padding(.horizontal)
+                
+                GroupBox {
+                    
+                    TextField("NameUser", text: $vmUser.currentUserName)
+                    
+                }.padding(.horizontal)
+                .padding(.top,41)
+
                 GroupBox {
                     
                     VStack {
@@ -66,8 +73,7 @@ struct InformationUser: View {
                     }
              
                     
-                }.padding(.horizontal,22)
-                    .padding(.top,41)
+                }.padding(.horizontal)
                 Spacer()
             }
         }

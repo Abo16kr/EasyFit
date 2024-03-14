@@ -20,8 +20,9 @@ struct LoginView: View {
     
     @State private var ShowOpneSingView = false
     @State private var ShowOpneCreatinAcView = false
-    
-    
+    @State var showOnboarding: Bool = false
+    @EnvironmentObject var vmAuth : AuthViewModel
+
     var body: some View {
         ZStack {
             
@@ -116,8 +117,40 @@ struct LoginView: View {
                             .padding(.horizontal)
                         
                     }
-                    .fullScreenCover(isPresented: $ShowOpneSingView) {
-                        SignInView()
+                    .fullScreenCover(isPresented: $ShowOpneSingView) { SignInView() }
+                    
+                    
+                    HStack(spacing: 10) {
+                        Button(action: {
+                            vmAuth.signInAnonymous()
+                            if vmAuth.isAuthenticated {
+                                showOnboarding = true
+                            }
+                        }, label: {
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 25, height: 25)
+                                .foregroundStyle(Color.white)
+                                .clipShape(.rect(cornerRadius: 20))
+                                .padding(.all,5)
+                                .background(Color(red: 0.094, green: 0.126, blue: 0.147))
+                                .clipShape(.rect(cornerRadius: .infinity))
+                        })
+                        Button(action: {}, label: {
+                            Image("LogoGoogle")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 25, height: 25)
+                                .clipShape(.rect(cornerRadius: 20))
+                                .padding(.all,5)
+                                .background(Color(red: 0.094, green: 0.126, blue: 0.147))
+                                .clipShape(.rect(cornerRadius: .infinity))
+                                
+                        })
+                    }
+                    .fullScreenCover(isPresented: $showOnboarding) {
+                        OnboardingView()
                     }
                 }.padding(.bottom)
             }
@@ -127,10 +160,12 @@ struct LoginView: View {
                     self.scaleValue = 1.0
                 }
             }
+        
         }
     }
 }
 
 #Preview {
     LoginView()
+        .environmentObject(AuthViewModel())
 }

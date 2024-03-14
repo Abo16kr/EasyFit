@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Charts
 
 struct HomeView: View {
     @State private var averageIsShown = false
