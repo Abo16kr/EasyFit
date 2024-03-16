@@ -20,7 +20,7 @@ struct FoodView: View {
     @State private var showBarSearch: Bool = false
     
     @State private var selectedDate = Date()
-    
+  
     var body: some View {
         NavigationView {
             ZStack {
@@ -31,113 +31,18 @@ struct FoodView: View {
                             
                             ScrollDate(selectedDate: $selectedDate)
                             
-                            VStack(alignment: .leading, spacing: 15) {
-                                Text("Consumed on \(selectedDate, style: .date)")
-                                    .font(.system(size: 15, weight: .regular))
-                                HStack {
-                                    Text("\(Int(vmFood.totalCalories(for: selectedDate)))")
-                                        .font(.system(size: 22, weight: .regular))
-                                    Text("/")
-                                    Text("1854 Kcal")
-                                        .font(.system(size: 22, weight: .regular))
-                                        .foregroundStyle(Color.gray)
-                                }
-
-                                ZStack(alignment: .leading) {
-                                    Rectangle()
-                                        .frame(height: 10)
-                                        .clipShape(.rect(cornerRadius: 5))
-                                        .foregroundStyle(Color.gray.opacity(0.5))
-                                    Rectangle()
-                                        .frame(width: (vmFood.totalCalories(for: selectedDate) / 1854) * UIScreen.main.bounds.width, height: 10)
-                                        .clipShape(.rect(cornerRadius: 5))
-                                        .foregroundStyle(Color.theme.Green2manColor)
-                                }
-                                
-                                HStack {
-                                    // Protein
-                                    nutrientProgressView(
-                                        nutrientName: "Protein",
-                                        total: vmFood.totalProtein(for: selectedDate),
-                                        goal: vmFood.proteinGoal)
-                                    
-                                    // Carbs
-                                    nutrientProgressView(
-                                        nutrientName: "Carbs",
-                                        total: vmFood.totalCarbs(for: selectedDate),
-                                        goal: vmFood.carbsGoal)
-                                    
-                                    // Fats
-                                    nutrientProgressView(
-                                        nutrientName: "Fats",
-                                        total: vmFood.totalFats(for: selectedDate),
-                                        goal: vmFood.fatsGoal)
-                                }
-
-                            }
-                            .padding(.all)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(Color.theme.ColorCareds)
-                            .clipShape(.rect(cornerRadius: 20))
-                            .padding(.horizontal)
-                            .padding(.bottom)
+                            CaredInfoDalyUser
                             
                             VStack {
-                                HStack {
-                                    Text("Meals Day")
-                                        .font(.system(size: 15, weight: .semibold))
-                                    Spacer()
-                                    Text("See all")
-                                        .font(.system(size: 14, weight: .regular))
-                                        .foregroundStyle(Color.gray.opacity(0.5))
-                                }.padding(.bottom)
-
-
+                                Text("Meals Day")
+                                    .font(.system(size: 15, weight: .semibold))
+                                    .frame(maxWidth: .infinity,alignment: .leading)
+                                    .padding(.bottom)
+                                
                                 if let dailyProducts = vmFood.fetchList(for: selectedDate), !dailyProducts.items.isEmpty {
-                                    VStack(spacing: 13) {
-                                        ForEach(dailyProducts.items, id: \.id) { product in
-                                            HStack(alignment: .center) {
-                                                LoadingImage(urlImage: product.imageUrl ?? "")
-                                                    .scaledToFill()
-                                                    .background(Color.gray.opacity(0.5))
-                                                    .frame(width: 80)
-                                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                
-                                                VStack(alignment: .leading, spacing: 20) {
-                                                    Text(product.name ?? "N/A")
-                                                        .lineLimit(1)
-                                                        .font(.system(size: 18, weight: .semibold))
-                                                    HStack(alignment: .bottom, spacing: 10) {
-                                                        Image(systemName: "flame.fill")
-                                                            .foregroundStyle(Color.theme.GreenColorMain)
-                                                        Text("\(String(format: "%.2f", vmFood.calculateCalories(for: product, gramsConsumed: vmFood.gramsConsumed)))")
-
-                                                        
-                                                            .font(.system(size: 16, weight: .regular))
-                                                        Text("cal")
-                                                            .font(.system(size: 14, weight: .regular))
-                                                            .foregroundStyle(Color.gray)
-                                                        Spacer()
-
-                                                    Button(action: {
-                                                        if let index = vmFood.addedProducts.firstIndex(where: { $0.id == product.id }) {
-                                                                vmFood.deleteProduct(at: index)
-                                                            }
-                                                        }) {Image(systemName: "trash")
-                                                                .foregroundColor(.red)}
-                                                    }.padding(.trailing)
-                                                }
-                                            }
-                                            .frame(maxWidth: .infinity)
-                                            .frame(height: 80)
-                                            .background(Color.theme.ColorCareds)
-                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        }
-                                    }
-                                } else {
-                                    Text("No items for this date")
-                                }
-
+                                    sectionListMealsDay
+                                } else { isFoodisEmpty }
+                                
                             }.padding(.horizontal)
                         }.padding(.bottom,180)
                     }
@@ -148,8 +53,6 @@ struct FoodView: View {
                         vmTabBar.dissmisBarSaerchFeed = false
                     }
                     vmFood.loadProducts()
-                   
-                    
                 }
                 .sheet(isPresented: $isScannerPresented) {
                     BarcodeScannerView { scannedBarcode in
@@ -171,12 +74,13 @@ struct FoodView_Previews: PreviewProvider {
         FoodView()
             .environmentObject(FoodMoldeView())
             .environmentObject(ModleViewTabBar())
+            .environmentObject(UserInfoViewModel())
         
     }
 }
 
 @ViewBuilder
-private func nutrientProgressView(nutrientName: String, total: Double, goal: Double) -> some View {
+func nutrientProgressView(nutrientName: String, total: Double, goal: Double) -> some View {
     VStack(alignment: .leading, spacing: 10) {
         Text(nutrientName)
             .font(.system(size: 15, weight: .regular))
@@ -240,7 +144,131 @@ extension FoodView  {
          return currentWindow.safeAreaInsets.bottom > 0
      }
     
+    private var sectionListMealsDay: some View {
+        VStack(spacing: 13) {
+            if let dailyProducts = vmFood.fetchList(for: selectedDate){
+                ForEach(dailyProducts.items, id: \.id) { product in
+                    HStack(alignment: .center) {
+                        LoadingImage(urlImage: product.imageUrl ?? "")
+                            .scaledToFill()
+                            .background(Color.gray.opacity(0.5))
+                            .frame(width: 80)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        
+                        VStack(alignment: .leading, spacing: 20) {
+                            Text(product.name ?? "N/A")
+                                .lineLimit(1)
+                                .font(.system(size: 18, weight: .semibold))
+                            HStack(alignment: .bottom, spacing: 10) {
+                                Image(systemName: "flame.fill")
+                                    .foregroundStyle(Color.theme.GreenColorMain)
+                                Text("\(String(format: "%.2f", vmFood.calculateCalories(for: product, gramsConsumed: vmFood.gramsConsumed)))")
+                                
+                                
+                                    .font(.system(size: 16, weight: .regular))
+                                Text("cal")
+                                    .font(.system(size: 14, weight: .regular))
+                                    .foregroundStyle(Color.gray)
+                                Spacer()
+                                
+                                Button(action: {
+                                    if let index = vmFood.addedProducts.firstIndex(where: { $0.id == product.id }) {
+                                        vmFood.deleteProduct(at: index)
+                                    }
+                                }) {Image(systemName: "trash")
+                                    .foregroundColor(.red)}
+                            }.padding(.trailing)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 80)
+                    .background(Color.theme.ColorCareds)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+            }
+        }
+    }
+ 
+    private var isFoodisEmpty: some View {
+        Group {
+            if Calendar.current.isDateInToday(selectedDate) {
+                ZStack(alignment: .topTrailing) {
+                    VStack {
+                        Text("No items for this for Today")
+                        Text("Search to add")
+                    }
+                    Image(systemName: "arrow.turn.right.down")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
+                        .rotationEffect(.degrees(30))
+                        .foregroundStyle(Color.gray)
+                        .offset(x: 10,y: 40)
+                }
+               
+                
+            } else {
+                Text("No items for this Day")
+            }
+        }.padding(.top,90)
+
+    }
+    
+    private var CaredInfoDalyUser: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            Text("Consumed on \(selectedDate, style: .date)")
+                .font(.system(size: 15, weight: .regular))
+            HStack {
+                Text("\(Int(vmFood.totalCalories(for: selectedDate)))")
+                    .font(.system(size: 22, weight: .regular))
+                Text("/")
+                Text("\(vmUser.currentUserCaloresDay) Kcal")
+                    .font(.system(size: 22, weight: .regular))
+                    .foregroundStyle(Color.gray)
+            }
+
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .frame(height: 10)
+                    .clipShape(.rect(cornerRadius: 5))
+                    .foregroundStyle(Color.gray.opacity(0.5))
+                Rectangle()
+                    .frame(width: (vmFood.totalCalories(for: selectedDate) / 1854) * UIScreen.main.bounds.width, height: 10)
+                    .clipShape(.rect(cornerRadius: 5))
+                    .foregroundStyle(Color.theme.Green2manColor)
+            }
+            
+            HStack {
+                // Protein
+                nutrientProgressView(
+                    nutrientName: "Protein",
+                    total: vmFood.totalProtein(for: selectedDate),
+                    goal: vmFood.proteinGoal)
+                
+                // Carbs
+                nutrientProgressView(
+                    nutrientName: "Carbs",
+                    total: vmFood.totalCarbs(for: selectedDate),
+                    goal: vmFood.carbsGoal)
+                
+                // Fats
+                nutrientProgressView(
+                    nutrientName: "Fats",
+                    total: vmFood.totalFats(for: selectedDate),
+                    goal: vmFood.fatsGoal)
+            }
+
+        }
+        .padding(.all)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.theme.ColorCareds)
+        .clipShape(.rect(cornerRadius: 20))
+        .padding(.horizontal)
+        .padding(.bottom)
+
+    }
 }
+
 
 struct DayView: View {
     var date: Date

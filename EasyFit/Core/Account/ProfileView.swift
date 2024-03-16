@@ -11,14 +11,13 @@ struct ProfileView: View {
     
     @EnvironmentObject var vmUser : UserInfoViewModel
     @State var image = UIImage()
-    
     @State private var showSheet = false
-    
 
     @Binding var isDarkMode: Bool
     @State private var birthDate = Date()
     @State private var age: DateComponents = DateComponents()
-    
+    @State var showInfoShere = false
+    @EnvironmentObject var vmTabBar: ModleViewTabBar
     var body: some View {
         NavigationStack {
             ZStack {
@@ -60,27 +59,39 @@ struct ProfileView: View {
                                     .frame(width: 40)
                             }
                             Divider()
-                            NavigationLink {
-                                GoalUserView(vmUser: vmUser)
-                            } label: {
+                            NavigationLink { GoalUserView(vmUser: vmUser) } label: {
                                 HStack {
                                     Text("Calories Goal")
                                     Spacer()
                                     Image(systemName: "chevron.forward")
                                 }.padding(.trailing)
                             }
-                           
+                            Divider()
+                            Button(action: { showInfoShere.toggle() }){
+                                HStack {
+                                    Text("Shere Info")
+                                    Spacer()
+                                    Image(systemName: "square.and.arrow.up")
+                                }.padding(.trailing)
+                            }
+                            .fullScreenCover(isPresented: $showInfoShere) {
+                                HealthChartView()
+                            }
                         }
 
                         Toggle(isOn: $isDarkMode, label: { Text("Dark Mode") })
                             .padding(.all)
                     }.padding(.all)
                         .foregroundStyle(Color.theme.ColorCaredsSwiftch)
+                        .padding(.bottom,90)
 
                 }
             }
             .navigationTitle("Account").navigationBarTitleDisplayMode(.inline)
-            .onAppear { vmUser.loadImage(forKey: "imagePrilesKeySaved") }
+            .onAppear {
+                vmUser.loadImage(forKey: "imagePrilesKeySaved")
+                vmTabBar.dissmisBarSaerch = false
+            }
         }
     }
 }
@@ -90,6 +101,9 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView(isDarkMode: .constant(true))
             .environmentObject(UserInfoViewModel())
+            .environmentObject(FoodMoldeView())
+            .environmentObject(HealthManger())
+            .environmentObject(ModleViewTabBar())
            
     }
 }
