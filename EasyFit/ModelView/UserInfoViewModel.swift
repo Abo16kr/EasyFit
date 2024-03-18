@@ -28,6 +28,7 @@ class UserInfoViewModel: ObservableObject {
     @AppStorage("HEIGHT_KEY") var currentUserHeight: Double = 160
     @AppStorage("WEIGHT_KEY") var currentUserWeight: Int = 60
     @AppStorage("NUMBER_KEY") var currentUserCaloresDay: Int = 1250
+    @AppStorage("waterIntake") var waterIntake: Double = 700
 
     
     @Published var imageProfiles: UIImage?

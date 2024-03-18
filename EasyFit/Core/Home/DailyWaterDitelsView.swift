@@ -7,12 +7,20 @@
 
 import SwiftUI
 
+
 struct DailyWaterDitelsView: View {
-    let rowsCuems = [GridItem(.fixed(76)),
-                     GridItem(.fixed(76)),
-                     GridItem(.fixed(76)),
-                     GridItem(.fixed(76))]
+
     @Environment(\.dismiss) var dismiss
+    
+    @EnvironmentObject var vmUserInfo : UserInfoViewModel
+    @AppStorage("lastUpdateDate") var lastUpdateDate: String = ""
+
+    private var waterBottleCount: Int {
+        Int(vmUserInfo.waterIntake) / 100
+    }
+       
+    private var gridLayout: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
+
     var body: some View {
         ZStack {
             Color.theme.ColorBagronedSwich.ignoresSafeArea(.all)
@@ -21,7 +29,7 @@ struct DailyWaterDitelsView: View {
                 ScrollView {
                     VStack {
                         
-                        Text("You have drank 750 ml of water")
+                        Text("You have drank \(vmUserInfo.waterIntake.formattedSting()) ml of water")
                             .font(.system(size: 22, weight: .semibold))
                             .frame(width: 160)
                             .padding(.top)
@@ -37,7 +45,14 @@ struct DailyWaterDitelsView: View {
                                 .frame(width: 190, height: 190)
                             VStack(alignment: .center, spacing: 10) {
                                 Image(systemName: "waterbottle.fill")
-                                Text("799")
+                        TextField("", text: Binding(
+                                   get: { String(format: "%.0f", vmUserInfo.waterIntake) },
+                                   set: { vmUserInfo.waterIntake = Double($0) ?? 700 }
+                               ))
+                                .keyboardType(.numberPad)
+                               .frame(width: 60)
+                                    .font(.headline)
+                                    .offset(x: 10)
                                     .font(.system(size: 16, weight: .regular))
                                 Text("m")
                                     .foregroundStyle(Color.gray)
@@ -45,29 +60,45 @@ struct DailyWaterDitelsView: View {
                         }.padding(.all)
                         
                         
-                        LazyVGrid(columns: rowsCuems){
-                            ForEach(0 ..< 10) { item in
-                                Button(action: {}) {
+                        LazyVGrid(columns: gridLayout, spacing: 20) {
+                            ForEach(0..<waterBottleCount, id: \.self) { _ in
+                                Button(action: {
+                                    self.decrementWaterIntake(by: 100)
+                                }, label: {
                                     Image(systemName: "waterbottle.fill")
                                         .resizable()
-                                        .scaledToFill()
+                                        .scaledToFit()
                                         .frame(width: 25, height: 25)
-                                        .foregroundStyle(Color.theme.GreenColorMain)
-                                        .frame(width: 80,height: 80)
-                                        .background(Color.theme.ColorCaredsSwiftch)
-                                        .clipShape(.rect(cornerRadius: 14))
-                                }
+                                        .foregroundStyle(Color.blue)
+                                        .frame(width: 80, height: 80)
+                                        .background(Color.gray.opacity(0.2))
+                                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                                })
                             }
                         }
-                  
+
                         
-                        
-                    }
+                    }.padding(.bottom,90)
                 }
             }
             .navigationBarBackButtonHidden(true)
         }
+    
     }
+    private func decrementWaterIntake(by amount: Double) {
+        vmUserInfo.waterIntake = max(vmUserInfo.waterIntake - amount, 0)
+     }
+     
+     private func checkForNewDay() {
+         let dateFormatter = DateFormatter()
+         dateFormatter.dateFormat = "yyyy-MM-dd"
+         let today = dateFormatter.string(from: Date())
+         
+         if lastUpdateDate != today {
+             vmUserInfo.waterIntake = vmUserInfo.waterIntake
+             lastUpdateDate = today
+         }
+     }
 }
 
 #Preview {

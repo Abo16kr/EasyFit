@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DailyWaterView: View {
+    @EnvironmentObject var vmUserInfo : UserInfoViewModel
+
     var body: some View {
         VStack {
             HStack {
@@ -29,7 +31,7 @@ struct DailyWaterView: View {
                     .foregroundStyle(Color.theme.GreenColorMain)
                     .frame(width: 100, height: 100)
                 VStack {
-                    Text("799")
+                    Text("\(vmUserInfo.waterIntake.formattedSting())")
                         .font(.system(size: 16, weight: .regular))
                     Text("m")
                         .foregroundStyle(Color.gray)

@@ -18,6 +18,7 @@ struct ProfileView: View {
     @State private var age: DateComponents = DateComponents()
     @State var showInfoShere = false
     @EnvironmentObject var vmTabBar: ModleViewTabBar
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -47,6 +48,7 @@ struct ProfileView: View {
                                 Text("Height")
                                 Spacer()
                                 TextField("5’10”", value: vmUser.$currentUserHeight, formatter: NumberFormatter())
+                                    .keyboardType(.numberPad)
                                     .frame(width: 40)
                             }
                             Divider()
@@ -56,6 +58,7 @@ struct ProfileView: View {
                                 Spacer()
                          
                                 TextField("183 lb", value: vmUser.$currentUserWeight, formatter: NumberFormatter())
+                                    .keyboardType(.numberPad)
                                     .frame(width: 40)
                             }
                             Divider()
