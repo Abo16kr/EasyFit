@@ -49,9 +49,14 @@ struct InformationUser: View {
                     
                     VStack {
                         DatePicker("Date of Birth", selection: $birthDate, in: ...Date(), displayedComponents: .date)
-                            .onChange(of: birthDate, perform: { value in
-                                age = Calendar.current.dateComponents([.year, .month, .day], from: birthDate, to: Date())
-                            })
+                            .onAppear {
+                                if let savedDate = UserDefaults.standard.object(forKey: "birthDate") as? Date {
+                                    birthDate = savedDate
+                                }
+                            }
+                            .onChange(of: birthDate) { newValue in
+                                UserDefaults.standard.set(newValue, forKey: "birthDate")
+                            }
                     }
                   
                     Divider()

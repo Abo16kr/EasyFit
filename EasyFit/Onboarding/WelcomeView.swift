@@ -24,7 +24,7 @@ struct WelcomeView: View {
                                 VStack(alignment: .leading,spacing: 2) {
                                     Text("See Your Activity")
                                         .font(.system(size: 16,weight: .regular))
-                                    Text("Skeep up with your rings, workouts, awards, and trends.")
+                                    Text("See how much you work in the day and how much spend calories.")
                                         .font(.system(size: 16,weight: .regular))
                                         .foregroundStyle(Color.gray)
                                 }
@@ -33,9 +33,9 @@ struct WelcomeView: View {
                             HStack(alignment: .center,spacing: 12) {
                                 
                                 VStack(alignment: .leading,spacing: 2) {
-                                    Text("See Your Activity")
+                                    Text("See Your Meals")
                                         .font(.system(size: 16,weight: .regular))
-                                    Text("Skeep up with your rings, workouts, awards, and trends.")
+                                    Text("See what you eat in the day and all the month.")
                                         .font(.system(size: 16,weight: .regular))
                                         .foregroundStyle(Color.gray)
                                 }
@@ -43,9 +43,9 @@ struct WelcomeView: View {
                             
                             HStack(alignment: .center,spacing: 12) {
                                 VStack(alignment: .leading,spacing: 2) {
-                                    Text("See Your Activity")
+                                    Text("See Your Calories")
                                         .font(.system(size: 16,weight: .regular))
-                                    Text("Skeep up with your rings, workouts, awards, and trends.")
+                                    Text("See your protein and carb and bread carbohydrates.")
                                         .font(.system(size: 16,weight: .regular))
                                         .foregroundStyle(Color.gray)
                                 }

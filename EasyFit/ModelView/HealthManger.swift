@@ -41,7 +41,22 @@ class HealthManger: ObservableObject {
               }
           }
       }
-    
+    func requestAuthorization() async {
+        let steps = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let calories = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+        let sleep = HKObjectType.categoryType(forIdentifier: .sleepAnalysis)!
+        let healthTypesToRead: Set<HKObjectType> = [steps, calories, sleep]
+        
+        do {
+            try await healthStore.requestAuthorization(toShare: [], read: healthTypesToRead)
+            fetchTodaySteps()
+            fetchTodayCalories()
+            fetchTodaySleep()
+        } catch {
+            print("Error requesting HealthKit authorization: \(error.localizedDescription)")
+        }
+    }
+
     private func fetchStatisticsForQuantityType(_ quantityType: HKQuantityType, unit: HKUnit, activityTitle: String, activitySubtitle: String, activityImage: String, goal: String, key: String) {
         let predicate = HKQuery.predicateForSamples(withStart: .startOfDay, end: Date(), options: .strictStartDate)
         let query = HKStatisticsQuery(quantityType: quantityType, quantitySamplePredicate: predicate, options: [.cumulativeSum]) { _, result, error in
@@ -157,3 +172,4 @@ class HealthManger: ObservableObject {
     
 }
 
+ 

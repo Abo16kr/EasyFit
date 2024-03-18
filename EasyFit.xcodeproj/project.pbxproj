@@ -49,6 +49,8 @@
 		C7ACA4E62BA313BE00B308FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7ACA4E52BA313BE00B308FB /* GoogleService-Info.plist */; };
 		C7ACA4E92BA3156100B308FB /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C7ACA4E82BA3156100B308FB /* FirebaseAnalytics */; };
 		C7ACA4EB2BA3156100B308FB /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7ACA4EA2BA3156100B308FB /* FirebaseAnalyticsSwift */; };
+		C7E290A72BA8A63D006ED89C /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E290A62BA8A63D006ED89C /* NotificationHandler.swift */; };
+		C7E290A92BA8A6A4006ED89C /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E290A82BA8A6A4006ED89C /* NotificationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +95,8 @@
 		C7ACA4E12BA2D24F00B308FB /* UserHealthChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHealthChartView.swift; sourceTree = "<group>"; };
 		C7ACA4E32BA2F1D100B308FB /*  FeedViewMolde.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " FeedViewMolde.swift"; sourceTree = "<group>"; };
 		C7ACA4E52BA313BE00B308FB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C7E290A62BA8A63D006ED89C /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
+		C7E290A82BA8A6A4006ED89C /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +192,7 @@
 				C78FA1FA2B9DB63B000D1838 /* ActivtyCstmesView.swift */,
 				C78FA2202BA0A152000D1838 /* DailyWaterView.swift */,
 				C78FA2222BA0A582000D1838 /* DailyWaterDitelsView.swift */,
+				C7E290A82BA8A6A4006ED89C /* NotificationView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -222,6 +227,7 @@
 				C78FA2042B9DD7C1000D1838 /* FoodMoldeView.swift */,
 				C7ACA4E32BA2F1D100B308FB /*  FeedViewMolde.swift */,
 				C745A8212BA34CC500F0512A /* AuthViewModel.swift */,
+				C7E290A62BA8A63D006ED89C /* NotificationHandler.swift */,
 			);
 			path = ModelView;
 			sourceTree = "<group>";
@@ -389,6 +395,7 @@
 				C78FA20E2B9E4251000D1838 /* RegistrationView.swift in Sources */,
 				C745A8222BA34CC500F0512A /* AuthViewModel.swift in Sources */,
 				C78FA1E22B9D9D74000D1838 /* HealthManger.swift in Sources */,
+				C7E290A92BA8A6A4006ED89C /* NotificationView.swift in Sources */,
 				C78FA1F02B9D9ECA000D1838 /* TabBarView.swift in Sources */,
 				C78FA2102B9EF31E000D1838 /* CutemsButtone.swift in Sources */,
 				C78FA20A2B9DFF56000D1838 /* FoodDetailView.swift in Sources */,
@@ -407,6 +414,7 @@
 				C78FA1EB2B9D9E16000D1838 /* ImagePicker.swift in Sources */,
 				C78FA1E42B9D9D8C000D1838 /* ActivtyMolde.swift in Sources */,
 				C78FA2212BA0A152000D1838 /* DailyWaterView.swift in Sources */,
+				C7E290A72BA8A63D006ED89C /* NotificationHandler.swift in Sources */,
 				C78FA2122B9F1887000D1838 /* ProfileView.swift in Sources */,
 				C78FA1E92B9D9DFE000D1838 /* UINavigationControllerEactenions.swift in Sources */,
 				C7ACA4E22BA2D24F00B308FB /* UserHealthChartView.swift in Sources */,

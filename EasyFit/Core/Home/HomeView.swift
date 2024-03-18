@@ -150,7 +150,7 @@ extension HomeView  {
             Spacer()
 
             NavigationLink {
-                Text("No Nativations")
+                NotificationView()
             } label: {
                 Image(systemName: "bell.badge")
                     .resizable()
