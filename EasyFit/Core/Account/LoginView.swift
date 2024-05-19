@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import GoogleSignIn
+import GoogleSignInSwift
 
 struct LoginView: View {
     
@@ -105,6 +107,7 @@ struct LoginView: View {
                         RegistrationView()
                     }
                     
+ 
                     Button(action: {
                         ShowOpneSingView.toggle()
                     }){
@@ -137,17 +140,15 @@ struct LoginView: View {
                                 .background(Color(red: 0.094, green: 0.126, blue: 0.147))
                                 .clipShape(.rect(cornerRadius: .infinity))
                         })
-                        Button(action: {}, label: {
-                            Image("LogoGoogle")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 25, height: 25)
-                                .clipShape(.rect(cornerRadius: 20))
-                                .padding(.all,5)
-                                .background(Color(red: 0.094, green: 0.126, blue: 0.147))
-                                .clipShape(.rect(cornerRadius: .infinity))
-                                
-                        })
+                        GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .icon, state: .pressed)) {
+                            vmAuth.signInWithGoogle()
+                            if vmAuth.isAuthenticated {
+                                showOnboarding = true
+                            }
+                        }.clipShape(.rect(cornerRadius: .infinity))
+
+                        
+
                     }
                     .fullScreenCover(isPresented: $showOnboarding) {
                         OnboardingView()
@@ -168,4 +169,5 @@ struct LoginView: View {
 #Preview {
     LoginView()
         .environmentObject(AuthViewModel())
+    
 }

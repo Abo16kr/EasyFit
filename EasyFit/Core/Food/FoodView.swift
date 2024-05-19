@@ -63,7 +63,7 @@ struct FoodView: View {
                 }
                 .overlay { SearchBarInfo }
             }
-            .navigationTitle("Daily progress")
+            .navigationTitle("Daily Progress")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
@@ -216,7 +216,7 @@ extension FoodView  {
     
     private var CaredInfoDalyUser: some View {
         VStack(alignment: .leading, spacing: 15) {
-            Text("Consumed on \(selectedDate, style: .date)")
+            Text("\(selectedDate, style: .date)")
                 .font(.system(size: 15, weight: .regular))
             HStack {
                 Text("\(Int(vmFood.totalCalories(for: selectedDate)))")
@@ -322,7 +322,7 @@ struct ScrollDate: View {
                     }
                 }
                 .onAppear {
-                    value.scrollTo(2)
+                    value.scrollTo(1)
                 }
             }
         }

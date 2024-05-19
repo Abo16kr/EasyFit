@@ -14,12 +14,12 @@ struct WelcomeView: View {
             ZStack {
                 Color.theme.ColorBagronedSwich.ignoresSafeArea(.all)
                 VStack {
-                    VStack {
+                    VStack(alignment: .leading,spacing: 10) {
                         Text("Welcome to EasyFit")
                             .font(.system(size: 40,weight: .semibold))
                             .padding(.vertical,55)
                         
-                        VStack(spacing: 38) {
+                        VStack(alignment: .leading,spacing: 38) {
                             HStack(alignment: .center,spacing: 12) {
                                 VStack(alignment: .leading,spacing: 2) {
                                     Text("See Your Activity")

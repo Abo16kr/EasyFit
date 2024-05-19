@@ -48,14 +48,15 @@ class FoodMoldeView: ObservableObject {
             guard let data = data, error == nil else {
                 print("Error fetching data: \(error?.localizedDescription ?? "Unknown error")")
                 DispatchQueue.main.async {
-                    self?.isLoadingData = false
-                    self?.noDataAvailable = true 
+                    self?.isLoadingData = true
+                    self?.noDataAvailable = true
                 }
                 return
             }
             if let decodedResponse = try? JSONDecoder().decode(ProductResponse.self, from: data) {
                 DispatchQueue.main.async {
                     self?.isLoadingData = false
+                    self?.noDataAvailable = false
                     self?.productDetail = decodedResponse.product
                 }
             }
